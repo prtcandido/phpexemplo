@@ -3,21 +3,23 @@ spl_autoload_register(function ($class_name) {
     include '..\\'.$class_name . '.php';
 });
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-	<h3>Pessoas</h3>
-	<p><a href="pessoa.create.php">Nova Pessoa</a></p>
+
+<?php include 'cabecalho.php'; ?>
+
+	<h4>Pessoas</h4>
+	<a href="pessoa.create.php" class="btn btn-primary btn-small">Nova Pessoa</a>
+	<table class="table table-striped" style="margin-top: 5px">
 	<?php
 	use Db\Persiste;
 	use Models\Pessoa;
-	$pessoas = Persiste::GetAllPessoa(0,10);
+	$pessoas = Persiste::GetAllPessoa();
+
 	foreach($pessoas as $p){
-		echo $p->getnome.'<br/>';
+		echo "<tr><td>$p->getid</td><td>$p->getnome</td><td>$p->gettelefone</td>"
+			."<td><a href='' class='btn btn-primary btn-small'>Editar</a></td>"
+			."<td><a href='' class='btn btn-primary btn-small'>Detalhe</a></td></tr>";
 	}
 	?>
-</body>
-</html>
+	</table>
+
+<?php include 'rodape.php'; ?>
