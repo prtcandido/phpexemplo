@@ -143,14 +143,82 @@ class Persiste{
 		return $retorno;
 	}
 
-	public static function UpdatePessoa($id,$novoNome,$novoTelefone)
+	public static function UpdatePessoa(Pessoa $obj)
 	{
 		// sql: update pessoas set nome=:nnome, telefone=:ntel where id=:id
+
+		try {
+			// Cria objeto PDO
+			$pdo = new PDO(hostDb,usuario,senha);
+
+			// Configura o comportamento no caso de erros: levanta exceção.
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			// Não emula comandos preparados, usa nativo do driver do banco
+			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
+
+			$stmt = $pdo->prepare('update pessoas set nome=:nnome, telefone=:ntel where id=:id');
+
+			$stmt->bindParam(':id',$pid);
+			$stmt->bindParam(':nnome',$pnome);
+			$stmt->bindParam(':ntel',$ptelefone);
+
+			$pid = $obj->getid;
+			$pnome = $obj->getnome;
+			$ptelefone = $obj->gettelefone;
+
+			// Executa comando SQL
+			$stmt->execute();
+
+			$retorno = true;
+
+		// Desvia para catch no caso de erros.	
+		} catch (PDOException $pex) {
+			//poder ser usado "$pex->getMessage();" ou "$pex->getCode();" para se obter detalhes sobre o erro.
+			$retorno = false;
+
+		// Sempre executa o bloco finally, tendo ocorrido ou não erros no bloco TRY	
+		} finally {
+			$pdo=null;
+		}
+
+		return $retorno;
+
 	}
 
 	public static function DeletePessoa($id)
 	{
 		// sql: delete from pessoa where id=:id
+		try {
+			// Cria objeto PDO
+			$pdo = new PDO(hostDb,usuario,senha);
+
+			// Configura o comportamento no caso de erros: levanta exceção.
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			// Não emula comandos preparados, usa nativo do driver do banco
+			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
+
+			$stmt = $pdo->prepare('delete from pessoas where id=:id');
+
+			$stmt->bindParam(':id',$id);
+
+			// Executa comando SQL
+			$stmt->execute();
+
+			$retorno = true;
+
+		// Desvia para catch no caso de erros.	
+		} catch (PDOException $pex) {
+			//poder ser usado "$pex->getMessage();" ou "$pex->getCode();" para se obter detalhes sobre o erro.
+			$retorno = false;
+
+		// Sempre executa o bloco finally, tendo ocorrido ou não erros no bloco TRY	
+		} finally {
+			$pdo=null;
+		}
+
+		return $retorno;
 	}
 
 }

@@ -13,6 +13,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>  
 </head>
+<style type="text/css">
+  .jumbotron {background-color: #ddddff;}
+</style>
 <body>
 <!-- Caixa grande usada para destacar conteúdo especial da página. -->
 <div class="jumbotron text-center" style="margin-bottom:0">
@@ -34,6 +37,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="Views/pessoa.index.php">Pessoa</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Projeto</a>
       </li>
     </ul>
   </div>  
