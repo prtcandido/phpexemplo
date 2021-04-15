@@ -30,14 +30,9 @@ class Persiste{
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
 
 			$stmt = $pdo->prepare('insert into pessoas (nome,telefone) values (:nome,:telefone)');
-			$stmt->bindParam(':nome',$pnome);
-			$stmt->bindParam(':telefone',$ptelefone);
-
-			$pnome = $obj->getnome;
-			$ptelefone = $obj->gettelefone;
 
 			// Executa comando SQL
-			$stmt->execute();
+			$stmt->execute([':nome'=>$obj->getnome,':telefone'=>$obj->gettelefone]);
 
 			$retorno = true;
 
@@ -65,10 +60,6 @@ class Persiste{
 
 			// Não emula comandos preparados, usa nativo do driver do banco
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
-
-			//$stmt = $pdo->prepare('select id, nome, telefone from pessoas order by id limit :inicioPagina, :tamanhoPagina');
-			// $stmt->bindParam(':inicioPagina',$inicioPagina);
-			// $stmt->bindParam(':tamanhoPagina',$tamanhoPagina);
 
 			$stmt = $pdo->prepare('select id, nome, telefone from pessoas order by id');
 
@@ -115,11 +106,8 @@ class Persiste{
 			// Cria objeto comando preparado
 			$stmt = $pdo->prepare('select id, nome, telefone from pessoas where id=:i');
 
-			// liga parametros do SQL ao parâmetro $id do método GetPessoaById
-			$stmt->bindParam(':i',$id);
-
 			// Executa comando SQL
-			$stmt->execute();
+			$stmt->execute([':i'=>$id]);
 
 			// Resultado na forma de vetor associativo
 			$stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -159,16 +147,8 @@ class Persiste{
 
 			$stmt = $pdo->prepare('update pessoas set nome=:nnome, telefone=:ntel where id=:id');
 
-			$stmt->bindParam(':id',$pid);
-			$stmt->bindParam(':nnome',$pnome);
-			$stmt->bindParam(':ntel',$ptelefone);
-
-			$pid = $obj->getid;
-			$pnome = $obj->getnome;
-			$ptelefone = $obj->gettelefone;
-
 			// Executa comando SQL
-			$stmt->execute();
+			$stmt->execute([':id'=>$obj->getid,':nnome'=>$obj->getnome,':ntel'=>$obj->gettelefone]);
 
 			$retorno = true;
 
@@ -201,10 +181,8 @@ class Persiste{
 
 			$stmt = $pdo->prepare('delete from pessoas where id=:id');
 
-			$stmt->bindParam(':id',$id);
-
 			// Executa comando SQL
-			$stmt->execute();
+			$stmt->execute([':id'=>$id]);
 
 			$retorno = true;
 
