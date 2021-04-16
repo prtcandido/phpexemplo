@@ -14,6 +14,10 @@
 					<input type="text" name="telefone" class="form-control" maxlength="20" required/>
 				</div>
 				<div class="form-group">
+					<label for="endereco">Endereço</label>
+					<input type="text" name="endereco" class="form-control" maxlength="100" required/>
+				</div>
+				<div class="form-group">
 					<input type="submit" value="Salvar" class="btn btn-primary btn-small"/>
 					<a href="pessoa.index.php" class="btn btn-primary btn-small">Voltar</a>
 				</div>

@@ -29,10 +29,10 @@ class Persiste{
 			// Não emula comandos preparados, usa nativo do driver do banco
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
 
-			$stmt = $pdo->prepare('insert into pessoas (nome,telefone) values (:nome,:telefone)');
+			$stmt = $pdo->prepare('insert into pessoas (nome,telefone,endereco) values (:nome,:telefone,:endereco)');
 
 			// Executa comando SQL
-			$stmt->execute([':nome'=>$obj->getnome,':telefone'=>$obj->gettelefone]);
+			$stmt->execute([':nome'=>$obj->getnome,':telefone'=>$obj->gettelefone,':endereco'=>$obj->getendereco]);
 
 			$retorno = true;
 
@@ -61,7 +61,7 @@ class Persiste{
 			// Não emula comandos preparados, usa nativo do driver do banco
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
 
-			$stmt = $pdo->prepare('select id, nome, telefone from pessoas order by id');
+			$stmt = $pdo->prepare('select id, nome, telefone, endereco from pessoas order by id');
 
 			// Executa comando SQL
 			$stmt->execute();
@@ -75,7 +75,7 @@ class Persiste{
 			// Criar vetor de objetos Pessoa a ser retornado
 			$retorno = []; // vetor vazio
 			foreach($tabela as $i=>$v){
-				array_push($retorno,new Pessoa($v['id'],$v['nome'],$v['telefone']));
+				array_push($retorno,new Pessoa($v['id'],$v['nome'],$v['telefone'],$v['endereco']));
 			}
 
 		// Desvia para catch no caso de erros.	
@@ -104,7 +104,7 @@ class Persiste{
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
 
 			// Cria objeto comando preparado
-			$stmt = $pdo->prepare('select id, nome, telefone from pessoas where id=:i');
+			$stmt = $pdo->prepare('select id, nome, telefone, endereco from pessoas where id=:i');
 
 			// Executa comando SQL
 			$stmt->execute([':i'=>$id]);
@@ -116,7 +116,7 @@ class Persiste{
 			$linha = $stmt->fetchAll();
 
 			// Criar vetor de objetos Pessoa a ser retornado
-			$retorno = new Pessoa($linha[0]['id'],$linha[0]['nome'],$linha[0]['telefone']); 
+			$retorno = new Pessoa($linha[0]['id'],$linha[0]['nome'],$linha[0]['telefone'],$linha[0]['endereco']); 
 
 		// Desvia para catch no caso de erros.	
 		} catch (PDOException $pex) {
@@ -145,10 +145,10 @@ class Persiste{
 			// Não emula comandos preparados, usa nativo do driver do banco
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
 
-			$stmt = $pdo->prepare('update pessoas set nome=:nnome, telefone=:ntel where id=:id');
+			$stmt = $pdo->prepare('update pessoas set nome=:nnome, telefone=:ntel, endereco=:nend where id=:id');
 
 			// Executa comando SQL
-			$stmt->execute([':id'=>$obj->getid,':nnome'=>$obj->getnome,':ntel'=>$obj->gettelefone]);
+			$stmt->execute([':id'=>$obj->getid,':nnome'=>$obj->getnome,':ntel'=>$obj->gettelefone,':nend'=>$obj->getendereco]);
 
 			$retorno = true;
 

@@ -15,7 +15,7 @@ spl_autoload_register(function ($class_name) {
 	$pessoas = Persiste::GetAllPessoa();
 
 	foreach($pessoas as $p){
-		echo "<tr><td>$p->getid</td><td>$p->getnome</td><td>$p->gettelefone</td>"
+		echo "<tr><td>$p->getid</td><td>$p->getnome</td><td>$p->gettelefone</td><td>$p->getendereco</td>"
 			."<td><a href='pessoa.edit.php?id=$p->getid' class='btn btn-primary btn-small'>Editar</a></td>"
 			."<td><a href='pessoa.delete.php?id=$p->getid' class='btn btn-primary btn-small'>Excluir</a></td></tr>";
 	}
