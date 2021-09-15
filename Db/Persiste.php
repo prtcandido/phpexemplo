@@ -34,12 +34,18 @@ class Persiste{
 			// Não emula comandos preparados, usa nativo do driver do banco
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
 
+			// ReflectionClass usada para inspecionar o objeto
+			// obtendo sua classe, propriedades, métodos, constantes, etc.
 			$rf = new ReflectionClass($obj);
 
+			// Obtém o nome da classe e define o nome da tabela como sendo
+			// o nome da classe no plural em minúsculas
 			$aux = explode("\\",$rf->name);
 			$tabela = array_pop($aux);
 			$tabela = strtolower($tabela.'s');
 
+			// Gera lista de colunas, lista de parâmetros e vetor com os dados
+			// para preparar o comando e executá-lo.
 			$colunas = "";
 			$parametros = "";
 			$vetor = [];
@@ -51,10 +57,10 @@ class Persiste{
 				$parametros = $parametros.':'.$p->name.',';
 				$vetor[$p->name]= "'".$obj->{'get'.$p->name}."'";
 			}
-
 			$colunas = substr($colunas,0,-1);   // retira última virgula
 			$parametros = substr($parametros,0,-1);
 
+			// Prepara o comando SQL
 			$stmt = $pdo->prepare("insert into $tabela ($colunas) values ($parametros)");
 
 			// Executa comando SQL
