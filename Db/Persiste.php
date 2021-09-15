@@ -6,6 +6,7 @@ namespace Db; // agrupamento de classes (caminho)
 use \PDO;
 use \PDOException;
 use \Models\Pessoa;
+use \ReflectionClass;
 // Obs.: PDO implementa interação com Banco de Dados
 
 // Inclui dados para conexão com banco de dados
@@ -17,7 +18,7 @@ class Persiste{
 
 	// Método para adicionar um objeto da classe Pessoa ao banco de dados
 	// Nome da tabela será "pessoas": create table pessoas (id int not null primary key AUTO_INCREMENT, nome varchar (100) not null, telefone varchar(20) not null)
-	public static function AddPessoa(Pessoa $obj){
+	public static function AddPessoa(Object $obj){
 		
 		try {
 			// Cria objeto PDO
@@ -29,14 +30,35 @@ class Persiste{
 			// Não emula comandos preparados, usa nativo do driver do banco
 			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
 
-			$stmt = $pdo->prepare('insert into pessoas (nome,telefone) values (:nome,:telefone)');
+			$rf = new ReflectionClass($obj);
+
+			$aux = explode("\\",$rf->name);
+			$tabela = array_pop($aux);
+			$tabela = strtolower($tabela.'s');
+
+			$colunas = "";
+			$parametros = "";
+			$vetor = [];
+			$primeiro = true;
+			foreach($rf->getProperties() as $p)
+			{
+				if ($primeiro) {$primeiro=false; continue;}  // descarta o id
+				$colunas = $colunas.$p->name.',';
+				$parametros = $parametros.':'.$p->name.',';
+				$vetor[$p->name]= "'".$obj->{'get'.$p->name}."'";
+			}
+
+			$colunas = substr($colunas,0,-1);   // retira última virgula
+			$parametros = substr($parametros,0,-1);
+
+			$stmt = $pdo->prepare("insert into $tabela ($colunas) values ($parametros)");
 
 			// Executa comando SQL
-			$stmt->execute([':nome'=>$obj->getnome,':telefone'=>$obj->gettelefone]);
+			$stmt->execute($vetor);
 
 			$retorno = true;
 
-		// Desvia para catch no caso de erros.	
+		//Desvia para catch no caso de erros.	
 		} catch (PDOException $pex) {
 			//poder ser usado "$pex->getMessage();" ou "$pex->getCode();" para se obter detalhes sobre o erro.
 			$retorno = false;
