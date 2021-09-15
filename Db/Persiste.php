@@ -14,11 +14,15 @@ include('ConfiguracaoConexao.php');
 
 // Classe (ou Tipo) de Objeto
 // obs.: Implementa métodos para inserção, deleção, alteração e recuperação de objetos persistidos em banco de dados
+
+// Tabelas no banco de dados
+//create table pessoas (id int not null primary key AUTO_INCREMENT, nome varchar (100) not null, telefone varchar(20) not null)
+
 class Persiste{
 
-	// Método para adicionar um objeto da classe Pessoa ao banco de dados
-	// Nome da tabela será "pessoas": create table pessoas (id int not null primary key AUTO_INCREMENT, nome varchar (100) not null, telefone varchar(20) not null)
-	public static function AddPessoa(Object $obj){
+	// Método para adicionar um objeto de classe "qualquer" ao banco de dados
+	// Nome da tabela será o nome da classe do objeto no plural
+	public static function Add(Object $obj){
 		
 		try {
 			// Cria objeto PDO
