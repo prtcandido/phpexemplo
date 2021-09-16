@@ -17,6 +17,14 @@ include('ConfiguracaoConexao.php');
 
 // Tabelas no banco de dados
 //create table pessoas (id int not null primary key AUTO_INCREMENT, nome varchar (100) not null, telefone varchar(20) not null)
+/*create table projetos (
+  id int not null primary key auto_increment,
+  nome varchar(100) not null,
+  orcamento decimal(14,2) not null,
+  pessoa_id int not null,
+  foreign key (pessoa_id) references pessoas(id)
+)
+*/
 
 class Persiste{
 
@@ -55,7 +63,7 @@ class Persiste{
 				if ($primeiro) {$primeiro=false; continue;}  // descarta o id
 				$colunas = $colunas.$p->name.',';
 				$parametros = $parametros.':'.$p->name.',';
-				$vetor[$p->name]= "'".$obj->{'get'.$p->name}."'";
+				$vetor[$p->name]= $obj->{'get'.$p->name};
 			}
 			$colunas = substr($colunas,0,-1);   // retira última virgula
 			$parametros = substr($parametros,0,-1);
