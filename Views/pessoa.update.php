@@ -12,7 +12,7 @@ if ( isset($_POST['id']) && isset($_POST['nome']) && isset($_POST['telefone']))
 {
 	// id foi colocado 0 pois será gerado automaticamente pelo banco de dados
 	$p = new Pessoa($_POST['id'],$_POST['nome'],$_POST['telefone']);
-	Persiste::UpdatePessoa($p);
+	Persiste::Update($p);
 }
 
 ?>

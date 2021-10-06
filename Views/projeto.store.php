@@ -1,5 +1,5 @@
 <?php
-header('location: /phpexemplo/index.php');
+header('location: projeto.index.php');
 spl_autoload_register(function ($class_name) {
     include '..\\'.$class_name . '.php';
 });

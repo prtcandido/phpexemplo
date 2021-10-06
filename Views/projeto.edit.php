@@ -6,20 +6,22 @@
   use Db\Persiste;
   use Models\Pessoa;
   $pessoas = Persiste::GetAll('Models\Pessoa');
+  $projeto = Persiste::GetById('Models\Projeto',$_GET['id']);
 ?>
 
 <h3>Criar Projeto</h3>
 <div class=container>
 	<div class="row">
 		<div class="col-sm-6">
-			<form action="projeto.store.php" method="post">
+			<form action="projeto.update.php" method="post">
+				<input type="hidden" name="id" value="<?= $projeto->getid ?>">
 				<div class="form-group">
 					<label for="nome">Nome</label>
-					<input type="text" name="nome" class="form-control" maxlength="100" required />
+					<input type="text" name="nome" class="form-control" maxlength="100" required value="<?= $projeto->getnome ?>" />
 				</div>
 				<div class="form-group">
 					<label for="orcamento">Orcamento</label>
-					<input type="number" name="orcamento" class="form-control" min="0" max="1000000" required/>
+					<input type="number" name="orcamento" class="form-control" min="0" max="1000000" required value="<?= $projeto->getorcamento ?>"/>
 				</div>
 				<div class="form-group">
 					<label for="pessoa_id">Orcamento</label>
@@ -27,7 +29,11 @@
 						<?php
 							foreach($pessoas as $p)
 							{
-								echo "<option value='$p->getid'>$p->getnome</option>";
+								if ($p->getid==$projeto->getpessoa_id) {
+								  echo "<option value='$p->getid' selected>$p->getnome</option>";
+								} else {
+								  echo "<option value='$p->getid'>$p->getnome</option>";
+								}
 							}
 						?>
 					</select>

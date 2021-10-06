@@ -9,10 +9,11 @@ spl_autoload_register(function ($class_name) {
 	<h4>Pessoas</h4>
 	<a href="pessoa.create.php" class="btn btn-primary btn-small">Nova Pessoa</a>
 	<table class="table table-striped" style="margin-top: 5px">
+		<tr><th>ID</th><th>Nome</th><th>Telefone</th><th></th><th></th></tr>
 	<?php
 	use Db\Persiste;
 	use Models\Pessoa;
-	$pessoas = Persiste::GetAllPessoa();
+	$pessoas = Persiste::GetAll('Models\Pessoa');
 
 	foreach($pessoas as $p){
 		echo "<tr><td>$p->getid</td><td>$p->getnome</td><td>$p->gettelefone</td>"
